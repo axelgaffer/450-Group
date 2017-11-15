@@ -11,42 +11,45 @@ import zombies.ReLogoObserver;
 
 class UserObserver extends ReLogoObserver{
 
-    @Setup
-    def setup(){
-        clearAll()
-        setDefaultShape(Spawner, "triangle")
-        createSpawners(1) {
-            setxy(11, 0)
-        }
-        setDefaultShape(Human, "person")
-        ///createHumans(numHumans){
-        ///    setxy(randomXcor(),randomYcor())
-        ///}
-        setDefaultShape(Zombie, "square")
-        for (int j = 0; j <12; j++) {
-            for (int i = 1; i <16; i++) {
-                if (j != 3 && j != 8)
-                    createZombies(1){
-                        setxy(j,i)
-                        size = 0.9
-                    }
-            }
-        }
-    }
-    @Go
-    def go(){
-        ask(zombies()){
-            step()
-        }
-        ask(humans()){
-            step()
-        }
-        ask(spawners()){
-            step()
-        }
-    }
+	@Setup
+	def setup(){
+		clearAll()
+		setDefaultShape(Spawner, "triangle")
+		//setDefaultShape(Goal1, "star")
+		createSpawners(1) {
+			setxy(11, 0)
+			setColor(65)
+		}
+		setDefaultShape(Human, "person")
+		///createHumans(numHumans){
+		///	setxy(randomXcor(),randomYcor())
+		///}
+		setDefaultShape(Zombie, "square")
+		for (int j = 0; j <12; j++) {
+			for (int i = 1; i <16; i++) {
+				if (j != 3 && j != 8)
+					createZombies(1){
+						setColor(15)
+						setxy(j,i)
+						size = 0.9
+					}
+			}
+		}
+	}
+	@Go
+	def go(){
+		ask(zombies()){
+			step()
+		}
+		ask(humans()){
+			step()
+		}
+		ask(spawners()){
+			step()
+		}
+	}
 
-    def remainingHumans() {
-        count(humans())
-    }
+	def remainingHumans() {
+		count(humans())
+	}
 }
