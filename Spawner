@@ -1,4 +1,4 @@
- package zombies.relogo
+package zombies.relogo
 
 import static repast.simphony.relogo.Utility.*
 import static repast.simphony.relogo.UtilityG.*
@@ -12,16 +12,29 @@ import repast.simphony.relogo.schedule.Setup
 import zombies.ReLogoTurtle
 
 class Spawner extends ReLogoTurtle {
-    def step() {
-        setColor(65)
-        if (count(humansHere())==0) {
-            label = "Next!"
-            hatchHumans(1){
-                size = 1
-            }
-        }
-        else {
-            label = ""
-        }
-    }
+	def humansSpawned = 0
+	def lastAisle = 1
+	
+	def step() {
+		if (count(humansHere())==0) {
+			label = "Next!"
+			hatchHumans(1){
+				size = 1
+				setColor(95)
+				if (lastAisle == 1)
+				{
+					aisle = 0
+					lastAisle = 0
+				}
+				else {
+					aisle = 1
+					lastAisle = 1
+				}
+			}
+			humansSpawned++
+		}
+		else {
+			label = ""
+		}
+	}
 }
