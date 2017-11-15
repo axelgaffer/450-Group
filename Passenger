@@ -12,24 +12,47 @@ import repast.simphony.relogo.schedule.Setup
 import zombies.ReLogoTurtle
 
 class Human extends ReLogoTurtle {
-    def infected = false
-    def infectionTime = 0
-    
-    def step() {
-        setColor(95)
-        def winner = minOneOf(neighbors()){
-            count(zombiesOn(it))
-        }
-        face(winner)
-        forward(1.5)
-        if (infected){
-            infectionTime++
-            if (infectionTime >= gestationPeriod) {
-                hatchZombies(1){
-                    size = 2
-                }
-                die()
-            }
-        }
-    }
+	// 0 = heading towards both aisles
+	// 1 = heading towards second aisle
+	// 2 = walking down the first aisle
+	// 3 = walking down the second aisle
+	// 4 = arrived at row, not yet sat down
+	// 5 = sat down
+	def state = 0
+	def aisle
+
+	def step() {
+		if (state == 0) {
+			facexy(8,0)
+			def peopleInFront = count(humansOn(patchAhead(1)))
+			if (peopleInFront == 0) {
+				forward(1)
+			}
+			if (getPxcor() == 8) {
+				if (aisle == 0)
+					state = 1
+				else
+					state = 2
+			}
+		}
+		else if (state == 1) {
+			facexy(3,0)
+			def peopleInFront = count(humansOn(patchAhead(1)))
+			if (peopleInFront == 0) {
+				forward(1)
+			}
+			if (getPxcor() == 3)
+				state = 3
+		}
+		else if (state == 2) {
+			facexy(8,getPycor()+1)
+		// do peopleinfront check
+			forward(1)
+		}
+		else if (state == 3) {
+			facexy(3,getPycor()+1)
+		// do peopleinfront check
+			forward(1)
+		}
+	}
 }
