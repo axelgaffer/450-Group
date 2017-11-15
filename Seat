@@ -12,26 +12,25 @@ import repast.simphony.relogo.schedule.Setup
 import zombies.ReLogoTurtle
 
 class Zombie extends ReLogoTurtle {
-    
-    def step() {
-        setColor(15)
-        def winner = maxOneOf(neighbors()){
-            count(humansOn(it))
-        }
-        //face(winner)
-        //forward(0.5)
-        if (count(humansHere())>0) {
-            label = "Sit On Me!"
-            def infectee = oneOf(humansHere())
-            infect(infectee)
-            createInfectionTo(infectee)
-        }
-        else {
-            label = ""
-        }
-    }
-    
-    def infect(Human human) {
-        human.infected = true
-    }
+	
+	def step() {
+		def winner = maxOneOf(neighbors()){
+			count(humansOn(it))
+		}
+		//face(winner)
+		//forward(0.5)
+		if (count(humansHere())>0) {
+			label = "Sit On Me!"
+			def infectee = oneOf(humansHere())
+			infect(infectee)
+			createInfectionTo(infectee)
+		}
+		else {
+			label = ""
+		}
+	}
+	
+	def infect(Human human) {
+		human.infected = true
+	}
 }
