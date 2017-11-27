@@ -35,11 +35,12 @@ class Spawner extends ReLogoTurtle {
 				// If the last person was sent to aisle 1
 				if (lastAisle == 1)
 				{
-					// This person's aisle is 0
+					// This person's aisle is 0, the left one
 					aisle = 0
 					lastAisle = 0
 				}
 				else {
+					// This person's aisle is 1, the right one
 					aisle = 1
 					lastAisle = 1
 				}

@@ -19,19 +19,19 @@ class Zombie extends ReLogoTurtle {
 	def row
 	// Which column the seat is in, goes from 0 to 11, with no seats in columns 3 or 8
 	def column
+	// Id of the seat
+	def id
 	
 	def step() {
 		// If there is a person here
+		label = id
 		if (count(humansHere())==1) {
-			label = "One Seated"
+			setColor(95)
 		}
 		// If two people have sat down in the same seat
 		else if (count(humansHere())>1){
-			label = "Crowded!"
+			setColor(45)
 		}
-		// No one is seated here
-		else
-			label = ""
 	}
 	
 	//def infect(Human human) {

@@ -35,13 +35,14 @@ class Human extends ReLogoTurtle {
 	// Is the person seated
 	def seated = false
 	// Seat the person has chosen
-	def targetSeat
+	int targetSeatXCor
+	int targetSeatYCor
 
 	def step() {
 		// State: If just arrived at plane
 		if (state == 0) {
 			// Face left
-			facexy(getPxcor()-1,getPycor())
+			facexy(getXcor()-1,getYcor())
 			// Check if there's someone blocking you
 			def peopleInFront = count(humansOn(patchAhead(1)))
 			// If there is no one in front of you
@@ -50,7 +51,7 @@ class Human extends ReLogoTurtle {
 				forward(1)
 			}
 			// If you've arrived at the right aisle
-			if (getPxcor() == 8) {
+			if (getXcor() == 8) {
 				// and you are assigned the left aisle
 				if (aisle == 0)
 					// Start walking towards the left aisle
@@ -63,7 +64,7 @@ class Human extends ReLogoTurtle {
 		// State: If you're walking towards the second aisle
 		else if (state == 1) {
 			// Face left
-			facexy(getPxcor()-1,getPycor())
+			facexy(getXcor()-1,getYcor())
 			// Check if there's someone blocking you
 			def peopleInFront = count(humansOn(patchAhead(1)))
 			// If there is no one in front of you
@@ -72,7 +73,7 @@ class Human extends ReLogoTurtle {
 				forward(1)
 			}
 			// If you've arrived at the second aisle
-			if (getPxcor() == 3)
+			if (getXcor() == 3)
 				// Begin walking up the current aisle
 				state = 2
 		}
@@ -80,39 +81,38 @@ class Human extends ReLogoTurtle {
 		else if (state == 2) {
 			// Need to check if there are any seats not taken ahead of you
 			// Count number of rows ahead of you
-			def rowsAhead = 15-getPycor()
+			def rowsAhead = 15-getYcor()
 			// The total number of seats ahead is 7 times the number of rows
 			def totalSeatsAhead = rowsAhead * 7
-			// Start empty seats ahead as total number of seats, and decrease it by 1 for every taken seat
+			// Starzt empty seats ahead as total number of seats, and decrease it by 1 for every taken seat
 			def emptySeatsAhead = totalSeatsAhead
 			// loop from row ahead of you to last row
-			for (int i = getPxcor()+1; i <=15; i++){
+			for (int i = getXcor()+1; i <=15; i++){
 				// loop from window seat to last eligible seat
-				for (int j = 0; j <=8; j++) {
-					// don't check the aisle column
-					if (j != 3) {
+				for (int j = 0; j <=7; j++) {
 						// If the seat at this coordinate is claimed
-						if (isSeatClaimed(zombiesOn(patch(j,i))) == true) {
+						// if (isSeatClaimed(zombie((i*10)+j)) == true) {
+						if (UserObserver.claimedList[(i*10)+j] == true) {
+						//if (isSeatClaimed(minOneOf(zombiesOn(patch(j,i)), {id}) == true) {
 							// Decrease number of empty seats
 							emptySeatsAhead--
 						}
-					}
 				}
 			}
 			// If all seats in rows ahead of you are taken
 			// TODO: Consider making last row with non empty seats a global target for all people instead of constantly checking
 			// TODO: Consider number of people in front of you in line
-			if (emptySeatsAhead == 0)
+			if (emptySeatsAhead <= 0)
 			{
 				// pick the highest priority open seat in the current row
-				sitInThisRowLeft(getPycor())
+				sitInThisRowLeft((int)getYcor())
 				// Enter state 4
 				state = 4
 			}
 			// else if there are empty seats in the rows in front of you
 			else {
 				// Face up
-				facexy(getPxcor(),getPycor()+1)
+				facexy(getXcor(),getYcor()+1)
 				// Check if there's someone blocking you
 				def peopleInFront = count(humansOn(patchAhead(1)))
 				// If there is no one in front of you
@@ -125,13 +125,13 @@ class Human extends ReLogoTurtle {
 					// Increase current frustration
 					frustration++				
 					// If there is an open seat in your current row
-					if (isAnyEmptySeatInRowLeft(getPycor)) {					
+					if (isAnyEmptySeatInRowLeft((int)getYcor())) {					
 						// Use frustration to check if you will decide to sit now
 						def chanceToSitNow = frustration * 4
 						// If you will sit now
 						if (chanceToSitNow > patience) {
 							// pick your seat, preferring window > outer aisle > inner aisle > outer middle > inner middle close > inner middle far > middle far aisle
-							sitInThisRowLeft(getPycor())
+							sitInThisRowLeft((int)getYcor())
 							// Enter state 4
 							state = 4
 						}
@@ -159,7 +159,7 @@ class Human extends ReLogoTurtle {
 			// else if there are empty seats in the rows in front of you
 			
 				// Face up
-				facexy(getPxcor(),getPycor()+1)
+				facexy(getXcor(),getYcor()+1)
 				// Check if there's someone blocking you
 				def peopleInFront = count(humansOn(patchAhead(1)))
 				// If there is no one in front of you
@@ -196,7 +196,8 @@ class Human extends ReLogoTurtle {
 		// If your remaining luggage is 0
 		if (remainingLuggage <= 0) {
 			// Set current position to chosen seat
-			
+			setXcor(targetSeatXCor)
+			setYcor(targetSeatYCor)
 			// Set seated to true
 			seated = true
 			// Enter state 5
@@ -225,35 +226,43 @@ def claimSeat(Zombie zombie) {
 }
 def isAnyEmptySeatInRowLeft(int i) {
 	def numEmpty = 7
-	for (int j = 0; j <=8; j++) {
-		if (j != 3) {
-			if (isSeatClaimed(zombiesOn(patch(j,i))) == true)
+	for (int j = 0; j <=7; j++) {
+		if (UserObserver.claimedList[(i-1)*10+j])
+		// if (isSeatClaimed(zombie(((i-1)*10)+j)) == true)
 				numEmpty--
 		}
-	}
 	return (numEmpty > 0)
 }
 def sitInThisRowLeft(int k) {
 	// Seating priority:
 	// window > outer aisle > inner aisle > outer middle > inner middle close > inner middle far > far middle aisle
-	// column 0 > 2 > 4 > 1 > 5 > 6 > 7
+	// column 0 > 2 > 3 > 1 > 4 > 5 > 6
 	def priority1 = new int[7]
 	priority1[0] = 0
 	priority1[1] = 2
-	priority1[2] = 4
+	priority1[2] = 3
 	priority1[3] = 1
-	priority1[4] = 5
-	priority1[5] = 6
-	priority1[6] = 7
+	priority1[4] = 4
+	priority1[5] = 5
+	priority1[6] = 6
 	
 	// Loop from the list of seats in order of priority
 	for (int i = 0; i < 7; i++){
 		// Is someone on this seat?
-		def checkingSeat = zombiesOn(patch(k, priority1[i]))
+		if (UserObserver.claimedList[(k-1)*10+priority1[i]] == false) {
+		//def Zombie checkingSeat = zombie(((k-1)*10)+priority1[i])
+		// def Zombie checkingSeat = minOneOf(zombiesOn(patch(k, priority1[i])), {id})
 		// If no,
-		if (isSeatClaimed(checkingSeat) == false) {
+		//if (checkingSeat.claimed == false) {
 			// Mark that seat as taken so no one else can take it while you sit down and set it as target
-			claimSeat(checkingSeat)
+			UserObserver.claimedList[(k-1)*10+priority1[i]] = true
+			
+			// claimSeat(checkingSeat)
+			targetSeatXCor = priority1[i]
+			if (targetSeatXCor >= 3)
+				targetSeatXCor++
+			targetSeatYCor = k
+			break
 		}
 	}
 	// TODO if time: Account for 2 different people in opposite aisles claiming the same middle seat somehow
