@@ -1,6 +1,0 @@
-"tick","Remaining Humans","Remaining Zombies"
-1.0,50,150
-2.0,50,150
-3.0,50,150
-4.0,50,150
-5.0,19,181

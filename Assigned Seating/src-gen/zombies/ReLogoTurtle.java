@@ -2088,66 +2088,45 @@ public class ReLogoTurtle extends BaseTurtle{
 	}
 
 	/**
-	 * Returns the value of the global variable numHumans.
+	 * Returns the value of the global variable maxHumans.
 	 *
-	 * @return the value of the global variable numHumans
+	 * @return the value of the global variable maxHumans
 	 */
-	@ReLogoBuilderGeneratedFor("global: numHumans")
-	public Object getNumHumans(){
-		return repast.simphony.relogo.ReLogoModel.getInstance().getModelParam("numHumans");
+	@ReLogoBuilderGeneratedFor("global: maxHumans")
+	public Object getMaxHumans(){
+		return repast.simphony.relogo.ReLogoModel.getInstance().getModelParam("maxHumans");
 	}
 
 	/**
-	 * Sets the value of the global variable numHumans.
+	 * Sets the value of the global variable maxHumans.
 	 *
 	 * @param value
 	 *            a value
 	 */
-	@ReLogoBuilderGeneratedFor("global: numHumans")
-	public void setNumHumans(Object value){
-		repast.simphony.relogo.ReLogoModel.getInstance().setModelParam("numHumans",value);
+	@ReLogoBuilderGeneratedFor("global: maxHumans")
+	public void setMaxHumans(Object value){
+		repast.simphony.relogo.ReLogoModel.getInstance().setModelParam("maxHumans",value);
 	}
 
 	/**
-	 * Returns the value of the global variable numZombies.
+	 * Returns the value of the global variable maxLuggage.
 	 *
-	 * @return the value of the global variable numZombies
+	 * @return the value of the global variable maxLuggage
 	 */
-	@ReLogoBuilderGeneratedFor("global: numZombies")
-	public Object getNumZombies(){
-		return repast.simphony.relogo.ReLogoModel.getInstance().getModelParam("numZombies");
+	@ReLogoBuilderGeneratedFor("global: maxLuggage")
+	public Object getMaxLuggage(){
+		return repast.simphony.relogo.ReLogoModel.getInstance().getModelParam("maxLuggage");
 	}
 
 	/**
-	 * Sets the value of the global variable numZombies.
-	 *
-	 * @param value
-	 *            a value
-	 */
-	@ReLogoBuilderGeneratedFor("global: numZombies")
-	public void setNumZombies(Object value){
-		repast.simphony.relogo.ReLogoModel.getInstance().setModelParam("numZombies",value);
-	}
-
-	/**
-	 * Returns the value of the global variable gestationPeriod.
-	 *
-	 * @return the value of the global variable gestationPeriod
-	 */
-	@ReLogoBuilderGeneratedFor("global: gestationPeriod")
-	public Object getGestationPeriod(){
-		return repast.simphony.relogo.ReLogoModel.getInstance().getModelParam("gestationPeriod");
-	}
-
-	/**
-	 * Sets the value of the global variable gestationPeriod.
+	 * Sets the value of the global variable maxLuggage.
 	 *
 	 * @param value
 	 *            a value
 	 */
-	@ReLogoBuilderGeneratedFor("global: gestationPeriod")
-	public void setGestationPeriod(Object value){
-		repast.simphony.relogo.ReLogoModel.getInstance().setModelParam("gestationPeriod",value);
+	@ReLogoBuilderGeneratedFor("global: maxLuggage")
+	public void setMaxLuggage(Object value){
+		repast.simphony.relogo.ReLogoModel.getInstance().setModelParam("maxLuggage",value);
 	}
 
 

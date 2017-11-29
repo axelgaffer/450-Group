@@ -21,7 +21,7 @@ class Human extends ReLogoTurtle {
 	// 5 = sat down
 	def state = 0
 	// maxLuggage: How much time someone will spend blocking the aisle putting their luggage away
-	int maxLuggage = 20
+	// int maxLuggage = 20
 	// remainingLuggage: How much time is left for putting luggage up
 	def remainingLuggage = maxLuggage
 	// Seat the person has been assigned
@@ -70,7 +70,7 @@ class Human extends ReLogoTurtle {
 		// State: If you're walking up the aisle
 		else if (state == 2) {
 			// Check if you're currently standing in the correct row
-			if ((int)getYcor() == targetSeatYCor)
+			if ((int)getYcor() >= targetSeatYCor)
 				// Enter state 4 - about to sit down
 				state = 4
 			else {

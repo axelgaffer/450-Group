@@ -4,7 +4,7 @@ import static repast.simphony.relogo.Utility.*;
 import static repast.simphony.relogo.UtilityG.*;
 
 import java.util.Random
-
+import java.util.concurrent.ThreadLocalRandom;
 import repast.simphony.relogo.Stop;
 import repast.simphony.relogo.Utility;
 import repast.simphony.relogo.UtilityG;
@@ -17,10 +17,17 @@ class UserObserver extends ReLogoObserver{
 	
 	static def claimedList = new boolean[160]
 	static Random rand = new Random()
+	static int seatsTaken = 0
+	static def randomSeats = new int[150]
 	
 	@Setup
 	def setup(){
 		clearAll()
+		for (int i = 0; i < 150; i++)
+		{
+			randomSeats[i] = i
+		}
+		shuffleArray(randomSeats)
 		Random rand = new Random()
 		setDefaultShape(Spawner, "triangle")
 		createSpawners(1) {
@@ -61,9 +68,28 @@ class UserObserver extends ReLogoObserver{
 		ask(spawners()){
 			step()
 		}
+		if (seatsTaken == maxHumans){
+			seatsTaken = 0
+			pause()
+		}
 	}
 
 	def remainingHumans() {
 		count(humans())
+	}
+	def seatsTaken() {
+		seatsTaken
+	}
+	def shuffleArray(int[] ar)
+	{
+	  Random rnd = ThreadLocalRandom.current()
+	  for (int i = ar.length - 1; i > 0; i--)
+	  {
+		int index = rnd.nextInt(i + 1)
+		// Simple swap
+		int a = ar[index]
+		ar[index] = ar[i]
+		ar[i] = a
+	  }
 	}
 }

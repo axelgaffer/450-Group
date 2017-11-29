@@ -23,9 +23,9 @@ public class UserGlobalsAndPanelFactory extends AbstractReLogoGlobalsAndPanelFac
 	        addStateChangeButtonWL("changeSomething","Change Something")
 	        
 		 */
-		addSliderWL ("numHumans", "Number of Humans", 1, 1, 100, 50)
-		addSliderWL ("numZombies", "Number of Zombies", 1, 1, 10, 5)
-		addSliderWL("gestationPeriod", "Gestation", 5,1,30,5)
-		addMonitorWL ("remainingHumans", "Remaining Humans", 5)
+		addSliderWL ("maxHumans", "Number of People To Board", 1, 1, 150, 150)
+		addSliderWL ("maxLuggage", "Time Spent Placing Luggage in Overbin", 1, 1, 30, 10)
+		addMonitorWL ("remainingHumans", "People on the plane", 1)
+		addMonitorWL ("seatsTaken", "Seats that are occupied", 1)
 	}
 }

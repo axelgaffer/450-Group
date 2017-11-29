@@ -21,16 +21,20 @@ class Zombie extends ReLogoTurtle {
 	def column
 	// Id of the seat
 	def id
+	boolean alreadyChecked = false
 	
 	def step() {
 		// If there is a person here
 		label = id
-		if (count(humansHere())==1) {
+		if (count(humansHere())==1 && alreadyChecked == false) {
 			setColor(95)
+			UserObserver.seatsTaken++
+			alreadyChecked = true
 		}
 		// If two people have sat down in the same seat
 		else if (count(humansHere())>1){
 			setColor(45)
+			
 		}
 	}
 	

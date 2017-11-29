@@ -21,31 +21,23 @@ class Spawner4Random extends ReLogoTurtle {
 
 	def arrayX = new int[150]
 	def arrayY = new int[150]
-	def count1 = 0
-	def count2 = 0
+	def count = 0
+
+
 
 	def step() {
-		for (int j = 0; j < 6; j++)
-			if (j != 3){
-				for (int i = 15; i >=1; i--){
-					if (count1 == 150 || count2 == 150)
+		for (int i = 15; i >= 1; i--) {
+			for (int j = 0; j <12; j++) {
+				if (j != 3 && j != 8)
+				{
+					if (count == 150)
 						break
-					arrayX[count1] = j
-					arrayY[count1] = i
-					count1 = count1 + 2
+					arrayX[count] = j
+					arrayY[count] = i
+					count++
 				}
 			}
-
-		for (int j = 11; j >6; j--)
-			if (j != 8){
-				for (int i = 15; i >=1; i--){
-					if (count1 == 150 || count2 == 150)
-						break
-					arrayX[count2] = j
-					arrayY[count2] = i
-					count2 = count2 + 2
-				}
-			}
+		}
 
 		// If there's no one in the spawn area and we have not spawned everyone
 		if ((count(humansHere())==0) && (humansSpawned < maxHumans)) {
@@ -59,8 +51,8 @@ class Spawner4Random extends ReLogoTurtle {
 				// Sky blue
 				setColor(95)
 				// If the last person was sent to aisle 1
-				targetSeatXCor = arrayX[humansSpawned]
-				targetSeatYCor = arrayY[humansSpawned]
+				targetSeatXCor = arrayX[UserObserver.randomSeats[humansSpawned]]
+				targetSeatYCor = arrayY[UserObserver.randomSeats[humansSpawned]]
 			}
 			// Keep track of how many people have been spawned
 			humansSpawned++
